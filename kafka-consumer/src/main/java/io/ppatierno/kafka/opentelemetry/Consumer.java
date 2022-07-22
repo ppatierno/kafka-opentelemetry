@@ -8,6 +8,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.errors.WakeupException;
+import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -40,8 +41,7 @@ public class Consumer {
     private AtomicBoolean running = new AtomicBoolean(true);
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        System.setProperty("otel.metrics.exporter", "none"); // disable metrics
-        // OTEL_SERVICE_NAME and OTEL_TRACES_EXPORTER=jaeger have to be set
+        // OTEL_SERVICE_NAME, OTEL_TRACES_EXPORTER=jaeger, OTEL_METRICS_EXPORTER=none have to be set
         AutoConfiguredOpenTelemetrySdk.initialize();
 
         Consumer consumer = new Consumer();
@@ -49,8 +49,8 @@ public class Consumer {
 
         Properties props = new Properties();
         props.setProperty(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, consumer.bootstrapServers);
-        props.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
-        props.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
+        props.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
+        props.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         props.setProperty(CommonClientConfigs.GROUP_ID_CONFIG, consumer.consumerGroup);
         props.setProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         props.setProperty(ConsumerConfig.INTERCEPTOR_CLASSES_CONFIG, TracingConsumerInterceptor.class.getName());
