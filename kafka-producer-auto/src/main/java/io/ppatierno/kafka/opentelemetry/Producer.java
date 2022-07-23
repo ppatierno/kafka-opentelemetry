@@ -1,7 +1,6 @@
 package io.ppatierno.kafka.opentelemetry;
 
 import io.opentelemetry.instrumentation.kafkaclients.TracingProducerInterceptor;
-import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -33,10 +32,8 @@ public class Producer {
     private long delay;
     private KafkaProducer<String, String> producer;
 
+    // OTEL_SERVICE_NAME, OTEL_TRACES_EXPORTER=jaeger, OTEL_METRICS_EXPORTER=none have to be set
     public static void main(String[] args) throws InterruptedException {
-        // OTEL_SERVICE_NAME, OTEL_TRACES_EXPORTER=jaeger, OTEL_METRICS_EXPORTER=none have to be set
-        AutoConfiguredOpenTelemetrySdk.initialize();
-
         Producer producer = new Producer();
         producer.loadConfiguration(System.getenv());
 
@@ -50,6 +47,8 @@ public class Producer {
 
         Thread producerThread = new Thread(() -> producer.run());
         producerThread.start();
+
+        Thread.sleep(5000);
         producerThread.join();
     }
 

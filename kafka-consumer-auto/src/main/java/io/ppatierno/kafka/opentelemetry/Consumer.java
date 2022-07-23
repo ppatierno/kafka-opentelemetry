@@ -1,7 +1,6 @@
 package io.ppatierno.kafka.opentelemetry;
 
 import io.opentelemetry.instrumentation.kafkaclients.TracingConsumerInterceptor;
-import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -40,10 +39,8 @@ public class Consumer {
 
     private AtomicBoolean running = new AtomicBoolean(true);
 
+    // OTEL_SERVICE_NAME, OTEL_TRACES_EXPORTER=jaeger, OTEL_METRICS_EXPORTER=none have to be set
     public static void main(String[] args) throws IOException, InterruptedException {
-        // OTEL_SERVICE_NAME, OTEL_TRACES_EXPORTER=jaeger, OTEL_METRICS_EXPORTER=none have to be set
-        AutoConfiguredOpenTelemetrySdk.initialize();
-
         Consumer consumer = new Consumer();
         consumer.loadConfiguration(System.getenv());
 
