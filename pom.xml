@@ -11,6 +11,8 @@
     <modules>
         <module>kafka-consumer-auto</module>
         <module>kafka-producer-auto</module>
+        <module>kafka-producer</module>
+        <module>kafka-consumer</module>
     </modules>
 
     <properties>
@@ -43,6 +45,11 @@
                 <groupId>io.opentelemetry.instrumentation</groupId>
                 <artifactId>opentelemetry-kafka-clients-2.6</artifactId>
                 <version>${opentelemetry.alpha-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.opentelemetry</groupId>
+                <artifactId>opentelemetry-sdk</artifactId>
+                <version>${opentelemetry.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
