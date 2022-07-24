@@ -13,6 +13,8 @@
         <module>kafka-producer-auto</module>
         <module>kafka-producer</module>
         <module>kafka-consumer</module>
+        <module>kafka-producer-agent</module>
+        <module>kafka-consumer-agent</module>
     </modules>
 
     <properties>
