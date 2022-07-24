@@ -18,6 +18,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>io.ppatierno</groupId>
+            <artifactId>kafka-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.kafka</groupId>
             <artifactId>kafka-clients</artifactId>
         </dependency>
