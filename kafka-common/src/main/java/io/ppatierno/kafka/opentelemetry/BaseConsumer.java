@@ -1,6 +1,7 @@
 package io.ppatierno.kafka.opentelemetry;
 
 import org.apache.kafka.clients.CommonClientConfigs;
+import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -32,7 +33,7 @@ public class BaseConsumer {
     protected String bootstrapServers;
     protected String consumerGroup;
     protected String topic;
-    protected KafkaConsumer<String, String> consumer;
+    protected Consumer<String, String> consumer;
 
     protected AtomicBoolean running = new AtomicBoolean(true);
 
