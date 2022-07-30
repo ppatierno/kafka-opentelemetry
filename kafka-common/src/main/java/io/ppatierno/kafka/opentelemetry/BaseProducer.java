@@ -2,6 +2,7 @@ package io.ppatierno.kafka.opentelemetry;
 
 import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -29,7 +30,7 @@ public abstract class BaseProducer {
     protected String topic;
     protected int numMessages;
     protected long delay;
-    protected KafkaProducer<String, String> producer;
+    protected Producer<String, String> producer;
 
     public void run() {
         try {
