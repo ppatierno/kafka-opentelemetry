@@ -17,6 +17,7 @@
         <module>kafka-consumer-agent</module>
         <module>kafka-common</module>
         <module>kafka-producer-wrap</module>
+        <module>kafka-consumer-wrap</module>
     </modules>
 
     <properties>
