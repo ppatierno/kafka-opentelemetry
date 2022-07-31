@@ -58,6 +58,15 @@ They are `otel.service.name`, `otel.traces.exporter` and `otel.metrics.exporter`
 #### SDK builders: programmatic configuration
 
 In order to build your own `OpenTelemetry` instance and not relying on autoconfiguration, it is possible to do so by using the SDK builders programmatically.
+The OpenTelemetry SDK dependency is needed in order to have such SDK builders classes available.
+
+```xml
+<dependency>
+    <groupId>io.opentelemetry</groupId>
+    <artifactId>opentelemetry-sdk</artifactId>
+</dependency>
+```
+
 The following code snippet sets the main attributes like the service name,then it configures the Jaeger exporter. 
 Finally, it creates the `OpenTelemetry` instance and registers it globally so that it can be used by the Kafka clients.
 
@@ -123,6 +132,7 @@ Then use the `tracingConsumer` as usual for receiving messages from the Kafka cl
 ## Using agent
 
 Another way it by adding tracing to your application with no changes or additions into your application code.
+You also don't need to add any dependencies to OpenTelemetry specific libraries.
 It is possible by using the OpenTelemetry agent you can download from [here](https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases).
 This agent has to run alongside your application in order to inject the logic for tracing messages sent and received to/from a Kafka cluster.
 
