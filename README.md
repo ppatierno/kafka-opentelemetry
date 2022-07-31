@@ -122,4 +122,28 @@ Then use the `tracingConsumer` as usual for receiving messages from the Kafka cl
 
 ## Using agent
 
-TBD
+Another way it by adding tracing to your application with no changes or additions into your application code.
+It is possible by using the OpenTelemetry agent you can download from [here](https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases).
+This agent has to run alongside your application in order to inject the logic for tracing messages sent and received to/from a Kafka cluster.
+
+Run the producer application in the following way.
+
+```shell
+java -javaagent:path/to/opentelemetry-javaagent.jar \
+      -Dotel.service.name=my-kafka-service \
+      -Dotel.traces.exporter=jaeger \
+      -Dotel.metrics.exporter=none \
+      -jar target/kafka-producer-agent-1.0-SNAPSHOT-jar-with-dependencies.jar
+```
+
+Run the consumer application similarly.
+
+```shell
+java -javaagent:path/to/opentelemetry-javaagent.jar \
+      -Dotel.service.name=my-kafka-service \
+      -Dotel.traces.exporter=jaeger \
+      -Dotel.metrics.exporter=none \
+      -jar target/kafka-consumer-agent-1.0-SNAPSHOT-jar-with-dependencies.jar
+```
+
+As usual, the main three system properties are set to specify the logical service name, the exporter to be used (i.e. jaeger) and disable the metrics exporter.
