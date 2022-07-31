@@ -82,11 +82,43 @@ OpenTelemetry openTelemetry = OpenTelemetrySdk.builder()
 
 ### Using interceptors
 
-TBD
+The Kafka clients API provides a way to "intercept" messages before they are sent to the brokers as well as messages received from the broker before being passed to the application.
+The OpenTelemetry instrumented Kafka library provides two interceptors to be configured to add tracing information automatically.
+The interceptor class has to be set in the properties bag used to create the Kafka client.
+
+Use the `TracingProducerInterceptor` for the producer in order to create a "send" span automatically, each time a message is sent.
+
+```java
+props.setProperty(ProducerConfig.INTERCEPTOR_CLASSES_CONFIG, TracingProducerInterceptor.class.getName());
+```
+
+Use the `TracingConsumerInterceptor` for the consumer in order to create a "receive" span automatically, each time a message is received.
+
+```java
+props.setProperty(ConsumerConfig.INTERCEPTOR_CLASSES_CONFIG, TracingConsumerInterceptor.class.getName());
+```
 
 ### Wrapping clients
 
-TBD
+The other way is by wrapping the Kafka client with a tracing enabled Kafka client.
+
+Assuming you have a `Producer<K, V> producer` instance, you can wrap it in the following way.
+
+```java
+KafkaTelemetry telemetry = KafkaTelemetry.create(GlobalOpenTelemetry.get());
+Producer<String, String> tracingProducer = telemetry.wrap(producer);
+```
+
+Then use the `tracingProducer` as usual for sending messages to the Kafka cluster.
+
+Assuming you have a `Consumer<K, V> consumer` instance, you can wrap it in the following way.
+
+```java
+KafkaTelemetry telemetry = KafkaTelemetry.create(GlobalOpenTelemetry.get());
+Consumer<String, String> tracingConsumer = telemetry.wrap(this.consumer);
+```
+
+Then use the `tracingConsumer` as usual for receiving messages from the Kafka cluster.
 
 ## Using agent
 
