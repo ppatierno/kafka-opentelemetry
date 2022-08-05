@@ -40,7 +40,8 @@ public class Producer extends BaseProducer {
         attributesBuilder.put(ResourceAttributes.SERVICE_NAME, "my-kafka-service");
         Attributes attributes = attributesBuilder.build();
 
-        Resource resource = Resource.create(attributes, ResourceAttributes.SCHEMA_URL);
+        Resource resource = Resource.getDefault()
+                .merge(Resource.create(attributes, ResourceAttributes.SCHEMA_URL));
 
         SdkTracerProvider sdkTracerProvider = SdkTracerProvider.builder()
                 .addSpanProcessor(BatchSpanProcessor.builder(JaegerGrpcSpanExporter.builder().build()).build())
