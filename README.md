@@ -142,7 +142,6 @@ Run the producer application in the following way.
 java -javaagent:path/to/opentelemetry-javaagent.jar \
       -Dotel.service.name=my-kafka-service \
       -Dotel.traces.exporter=jaeger \
-      -Dotel.metrics.exporter=none \
       -jar target/kafka-producer-agent-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
 
@@ -152,7 +151,6 @@ Run the consumer application similarly.
 java -javaagent:path/to/opentelemetry-javaagent.jar \
       -Dotel.service.name=my-kafka-service \
       -Dotel.traces.exporter=jaeger \
-      -Dotel.metrics.exporter=none \
       -jar target/kafka-consumer-agent-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
 
