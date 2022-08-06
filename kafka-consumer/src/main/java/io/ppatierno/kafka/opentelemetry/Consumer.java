@@ -2,7 +2,6 @@ package io.ppatierno.kafka.opentelemetry;
 
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.Attributes;
-import io.opentelemetry.api.common.AttributesBuilder;
 import io.opentelemetry.api.trace.propagation.W3CTraceContextPropagator;
 import io.opentelemetry.context.propagation.ContextPropagators;
 import io.opentelemetry.exporter.jaeger.JaegerGrpcSpanExporter;
@@ -41,12 +40,8 @@ public class Consumer extends BaseConsumer {
     }
 
     private static void configureOpenTelemetry() {
-        AttributesBuilder attributesBuilder = Attributes.builder();
-        attributesBuilder.put(ResourceAttributes.SERVICE_NAME, "my-kafka-service");
-        Attributes attributes = attributesBuilder.build();
-
         Resource resource = Resource.getDefault()
-                .merge(Resource.create(attributes, ResourceAttributes.SCHEMA_URL));
+                .merge(Resource.create(Attributes.of(ResourceAttributes.SERVICE_NAME, "my-kafka-service")));
 
         SdkTracerProvider sdkTracerProvider = SdkTracerProvider.builder()
                 .addSpanProcessor(BatchSpanProcessor.builder(JaegerGrpcSpanExporter.builder().build()).build())

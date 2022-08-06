@@ -71,12 +71,8 @@ The following code snippet sets the main attributes like the service name,then i
 Finally, it creates the `OpenTelemetry` instance and registers it globally so that it can be used by the Kafka clients.
 
 ```java
-AttributesBuilder attributesBuilder = Attributes.builder();
-attributesBuilder.put(ResourceAttributes.SERVICE_NAME, "my-kafka-service");
-Attributes attributes = attributesBuilder.build();
-
 Resource resource = Resource.getDefault()
-                .merge(Resource.create(attributes, ResourceAttributes.SCHEMA_URL));
+        .merge(Resource.create(Attributes.of(ResourceAttributes.SERVICE_NAME, "my-kafka-service")));
 
 SdkTracerProvider sdkTracerProvider = SdkTracerProvider.builder()
         .addSpanProcessor(BatchSpanProcessor.builder(JaegerGrpcSpanExporter.builder().build()).build())
