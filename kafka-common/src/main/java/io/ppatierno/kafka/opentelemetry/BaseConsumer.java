@@ -63,7 +63,7 @@ public class BaseConsumer {
         this.topic = map.getOrDefault(TOPIC_ENV_VAR, DEFAULT_TOPIC);
     }
 
-    public Properties loadKafkaProducerProperties() {
+    public Properties loadKafkaConsumerProperties() {
         Properties props = new Properties();
         props.setProperty(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, this.bootstrapServers);
         props.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());

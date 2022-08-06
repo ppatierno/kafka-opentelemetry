@@ -11,7 +11,7 @@ public class Consumer extends BaseConsumer {
     public static void main(String[] args) throws IOException, InterruptedException {
         Consumer consumer = new Consumer();
         consumer.loadConfiguration(System.getenv());
-        Properties props = consumer.loadKafkaProducerProperties();
+        Properties props = consumer.loadKafkaConsumerProperties();
         consumer.createKafkaConsumer(props);
 
         CountDownLatch latch = new CountDownLatch(1);

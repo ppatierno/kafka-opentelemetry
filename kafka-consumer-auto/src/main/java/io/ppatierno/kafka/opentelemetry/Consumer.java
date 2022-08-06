@@ -16,7 +16,7 @@ public class Consumer extends BaseConsumer {
     public static void main(String[] args) throws IOException, InterruptedException {
         Consumer consumer = new Consumer();
         consumer.loadConfiguration(System.getenv());
-        Properties props = consumer.loadKafkaProducerProperties();
+        Properties props = consumer.loadKafkaConsumerProperties();
         props.setProperty(ConsumerConfig.INTERCEPTOR_CLASSES_CONFIG, TracingConsumerInterceptor.class.getName());
         consumer.createKafkaConsumer(props);
 

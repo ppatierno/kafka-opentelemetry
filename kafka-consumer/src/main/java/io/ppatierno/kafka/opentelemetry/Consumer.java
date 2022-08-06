@@ -26,7 +26,7 @@ public class Consumer extends BaseConsumer {
 
         Consumer consumer = new Consumer();
         consumer.loadConfiguration(System.getenv());
-        Properties props = consumer.loadKafkaProducerProperties();
+        Properties props = consumer.loadKafkaConsumerProperties();
         props.setProperty(ConsumerConfig.INTERCEPTOR_CLASSES_CONFIG, TracingConsumerInterceptor.class.getName());
         consumer.createKafkaConsumer(props);
 
