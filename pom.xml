@@ -19,6 +19,7 @@
         <module>kafka-producer-wrap</module>
         <module>kafka-consumer-wrap</module>
         <module>kafka-streams-agent</module>
+        <module>kafka-streams-auto</module>
     </modules>
 
     <properties>
