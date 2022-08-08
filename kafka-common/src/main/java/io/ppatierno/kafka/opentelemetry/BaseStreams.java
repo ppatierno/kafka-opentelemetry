@@ -1,6 +1,7 @@
 package io.ppatierno.kafka.opentelemetry;
 
 import org.apache.kafka.common.serialization.Serdes;
+import org.apache.kafka.streams.KafkaClientSupplier;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
@@ -32,7 +33,7 @@ public class BaseStreams {
     protected String applicationId;
     protected KafkaStreams streams;
 
-    public void run(Properties props) {
+    public void run(Properties props, KafkaClientSupplier clientSupplier) {
         StreamsBuilder builder = new StreamsBuilder();
 
         builder.stream(this.topicIn, Consumed.with(Serdes.String(), Serdes.String()))
@@ -42,7 +43,11 @@ public class BaseStreams {
         Topology topology = builder.build();
         log.info(topology.describe());
 
-        this.streams = new KafkaStreams(topology, props);
+        if (clientSupplier == null) {
+            this.streams = new KafkaStreams(topology, props);
+        } else {
+            this.streams = new KafkaStreams(topology, props, clientSupplier);
+        }
         this.streams.start();
     }
 
