@@ -32,7 +32,7 @@ public class Streams extends BaseStreams {
         });
 
         try {
-            streams.run(props);
+            streams.run(props, null);
             latch.await();
         } catch (Throwable e) {
             System.exit(1);
