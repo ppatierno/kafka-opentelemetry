@@ -6,7 +6,7 @@ import java.util.concurrent.CountDownLatch;
 
 public class Streams extends BaseStreams {
 
-    // java -javaagent:path/to/opentelemetry-javaagent.jar -Dotel.service.name=my-kafka-service -Dotel.traces.exporter=jaeger -Dotel.metrics.exporter=none -jar target/kafka-streams-agent-1.0-SNAPSHOT-jar-with-dependencies.jar
+    // java -javaagent:path/to/opentelemetry-javaagent.jar -Dotel.service.name=my-kafka-service -Dotel.traces.exporter=jaeger -jar target/kafka-streams-agent-1.0-SNAPSHOT-jar-with-dependencies.jar
     public static void main(String[] args) throws IOException {
         Streams streams = new Streams();
         streams.loadConfiguration(System.getenv());
