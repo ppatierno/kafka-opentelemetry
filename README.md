@@ -139,7 +139,8 @@ Run the producer application in the following way.
 java -javaagent:path/to/opentelemetry-javaagent.jar \
       -Dotel.service.name=my-kafka-service \
       -Dotel.traces.exporter=jaeger \
-      -jar target/kafka-producer-agent-1.0-SNAPSHOT-jar-with-dependencies.jar
+      -Dotel.metrics.exporter=none \
+      -jar kafka-producer-agent/target/kafka-producer-agent-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
 
 Run the consumer application similarly.
@@ -148,7 +149,9 @@ Run the consumer application similarly.
 java -javaagent:path/to/opentelemetry-javaagent.jar \
       -Dotel.service.name=my-kafka-service \
       -Dotel.traces.exporter=jaeger \
-      -jar target/kafka-consumer-agent-1.0-SNAPSHOT-jar-with-dependencies.jar
+      -Dotel.metrics.exporter=none \
+      -Dotel.instrumentation.messaging.experimental.receive-telemetry.enabled=true \
+      -jar kafka-consumer-agent/target/kafka-consumer-agent-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
 
 As usual, the main three system properties are set to specify the logical service name, the exporter to be used (i.e. jaeger) and disable the metrics exporter.

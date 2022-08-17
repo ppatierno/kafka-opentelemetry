@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Consumer extends BaseConsumer {
 
-    // java -javaagent:path/to/opentelemetry-javaagent.jar -Dotel.service.name=my-kafka-service -Dotel.traces.exporter=jaeger -jar target/kafka-consumer-agent-1.0-SNAPSHOT-jar-with-dependencies.jar
+    // java -javaagent:path/to/opentelemetry-javaagent.jar -Dotel.service.name=my-kafka-service -Dotel.traces.exporter=jaeger -Dotel.metrics.exporter=none -Dotel.instrumentation.messaging.experimental.receive-telemetry.enabled=true -jar kafka-consumer-agent/target/kafka-consumer-agent-1.0-SNAPSHOT-jar-with-dependencies.jar
     public static void main(String[] args) throws IOException, InterruptedException {
         Consumer consumer = new Consumer();
         consumer.loadConfiguration(System.getenv());
