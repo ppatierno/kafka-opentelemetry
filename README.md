@@ -8,7 +8,7 @@ In order to get tracing information out of your application using Kafka clients,
 ## Instrumenting the Kafka clients based application
 
 Instrumenting the application means enabling the tracing in the Kafka clients.
-First, you need to add the dependency to the instrumented Kafka clients.
+First, you need to add the dependency to the Kafka clients instrumentation library.
 
 ```xml
 <dependency>
