@@ -104,6 +104,13 @@ Use the `TracingConsumerInterceptor` for the consumer in order to create a "rece
 props.setProperty(ConsumerConfig.INTERCEPTOR_CLASSES_CONFIG, TracingConsumerInterceptor.class.getName());
 ```
 
+For a Streams API based application, you have to set the interceptors for the underlying producer and consumer.
+
+```java
+props.put(StreamsConfig.CONSUMER_PREFIX + ConsumerConfig.INTERCEPTOR_CLASSES_CONFIG, TracingConsumerInterceptor.class.getName());
+props.put(StreamsConfig.PRODUCER_PREFIX + ProducerConfig.INTERCEPTOR_CLASSES_CONFIG, TracingProducerInterceptor.class.getName());
+```
+
 ### Wrapping clients
 
 The other way is by wrapping the Kafka client with a tracing enabled Kafka client.
@@ -125,6 +132,29 @@ Consumer<String, String> tracingConsumer = telemetry.wrap(this.consumer);
 ```
 
 Then use the `tracingConsumer` as usual for receiving messages from the Kafka cluster.
+
+For a Streams API based application, you have to wrap the underlying producer and consumer.
+This can be done by implementing the `KafkaClientSupplier` interface which returns the instances of producer and consumer used by the Streams API.
+
+```java
+private static class TracingKafkaClientSupplier implements KafkaClientSupplier {
+    // ...
+
+    @Override
+    public Producer<byte[], byte[]> getProducer(Map<String, Object> config) {
+        KafkaTelemetry telemetry = KafkaTelemetry.create(GlobalOpenTelemetry.get());
+        return telemetry.wrap(new KafkaProducer<>(config));
+    }
+
+    @Override
+    public Consumer<byte[], byte[]> getConsumer(Map<String, Object> config) {
+        KafkaTelemetry telemetry = KafkaTelemetry.create(GlobalOpenTelemetry.get());
+        return telemetry.wrap(new KafkaConsumer<>(config));
+    }
+    
+    // ...
+}
+```
 
 ## Using agent
 
@@ -155,3 +185,5 @@ java -javaagent:path/to/opentelemetry-javaagent.jar \
 ```
 
 As usual, the main three system properties are set to specify the logical service name, the exporter to be used (i.e. jaeger) and disable the metrics exporter.
+
+The same can be used for running the Streams API based application.
