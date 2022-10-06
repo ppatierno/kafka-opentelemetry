@@ -135,24 +135,31 @@ Then use the `tracingConsumer` as usual for receiving messages from the Kafka cl
 
 For a Streams API based application, you have to wrap the underlying producer and consumer.
 This can be done by implementing the `KafkaClientSupplier` interface which returns the instances of producer and consumer used by the Streams API.
+Or you can leverage the Kafka provided default implementation `DefaultKafkaClientSupplier`, to avoid code duplication, and wrapping producer and consumer to add the telemetry logic.
 
 ```java
-private static class TracingKafkaClientSupplier implements KafkaClientSupplier {
-    // ...
-
+private static class TracingKafkaClientSupplier extends DefaultKafkaClientSupplier {
     @Override
     public Producer<byte[], byte[]> getProducer(Map<String, Object> config) {
         KafkaTelemetry telemetry = KafkaTelemetry.create(GlobalOpenTelemetry.get());
-        return telemetry.wrap(new KafkaProducer<>(config));
+        return telemetry.wrap(super.getProducer(config));
     }
 
     @Override
     public Consumer<byte[], byte[]> getConsumer(Map<String, Object> config) {
         KafkaTelemetry telemetry = KafkaTelemetry.create(GlobalOpenTelemetry.get());
-        return telemetry.wrap(new KafkaConsumer<>(config));
+        return telemetry.wrap(super.getConsumer(config));
     }
-    
-    // ...
+
+    @Override
+    public Consumer<byte[], byte[]> getRestoreConsumer(Map<String, Object> config) {
+        return this.getConsumer(config);
+    }
+
+    @Override
+    public Consumer<byte[], byte[]> getGlobalConsumer(Map<String, Object> config) {
+        return this.getConsumer(config);
+    }
 }
 ```
 
