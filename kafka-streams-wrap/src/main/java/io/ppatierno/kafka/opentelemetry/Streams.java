@@ -15,6 +15,7 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.apache.kafka.streams.KafkaClientSupplier;
 import org.apache.kafka.streams.StreamsConfig;
+import org.apache.kafka.streams.processor.internals.DefaultKafkaClientSupplier;
 
 import java.util.Map;
 import java.util.Properties;
@@ -53,23 +54,17 @@ public class Streams extends BaseStreams {
         }
     }
 
-    private static class TracingKafkaClientSupplier implements KafkaClientSupplier {
-
-        @Override
-        public Admin getAdmin(Map<String, Object> config) {
-            return Admin.create(config);
-        }
-
+    private static class TracingKafkaClientSupplier extends DefaultKafkaClientSupplier {
         @Override
         public Producer<byte[], byte[]> getProducer(Map<String, Object> config) {
             KafkaTelemetry telemetry = KafkaTelemetry.create(GlobalOpenTelemetry.get());
-            return telemetry.wrap(new KafkaProducer<>(config, new ByteArraySerializer(), new ByteArraySerializer()));
+            return telemetry.wrap(super.getProducer(config));
         }
 
         @Override
         public Consumer<byte[], byte[]> getConsumer(Map<String, Object> config) {
             KafkaTelemetry telemetry = KafkaTelemetry.create(GlobalOpenTelemetry.get());
-            return telemetry.wrap(new KafkaConsumer<>(config, new ByteArrayDeserializer(), new ByteArrayDeserializer()));
+            return telemetry.wrap(super.getConsumer(config));
         }
 
         @Override
